@@ -164,11 +164,11 @@ color_map = {
     "Nepali": "#8C93F4",              # blue
     "Punjabi": "#F67660",             # red
     "Hindi": "#D27B18",               # green
-    "Urdu": "#370D63",                # purple
+    "Urdu": "#87DB8B",                # purple
     "Sinhalese": "#1E6E17",           # orange
     "Bengali": "#19D3F3",             # light blue
     "Gujarati": "#FF6692",            # pink
-    "Marathi": "#B6E880",             # light green
+    "Marathi": "#97DAF5",             # light green
     "Sindhi": "#FF97FF",              # light purple
     "Dhivehi": "#52FEDC",             # yellow
     "Indo-Aryan, nec": "#15157F",     # soft blue
