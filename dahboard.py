@@ -166,14 +166,14 @@ color_map = {
     "Hindi": "#F4791A",               # green
     "Urdu": "#87DB8B",                # purple
     "Sinhalese": "#1E6E17",           # orange
-    "Bengali": "#19D3F3",             # light blue
+    "Bengali": "#21B8D3",             # light blue
     "Gujarati": "#FF6692",            # pink
-    "Marathi": "#97DAF5",             # light green
+    "Marathi": "#832205",             # light green
     "Sindhi": "#EBF561",              # light purple
-    "Dhivehi": "#52FEDC",             # yellow
+    "Dhivehi": "#299988",             # yellow
     "Indo-Aryan, nec": "#15157F",     # soft blue
     "Fijian Hindustani": "#382B27",   # coral
-    "Konkani": "#45DD63",             # teal-green
+    "Konkani": "#2B2755",             # teal-green
     "Assamese": "#7F6CA3"             # lavender
 }
 # -------------------------------
