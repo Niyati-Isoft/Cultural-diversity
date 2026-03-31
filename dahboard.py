@@ -56,7 +56,6 @@ st.markdown(
 # -------------------------------
 file_path = r"Final data.xlsx"
 df = pd.read_excel(file_path)
-
 # -------------------------------
 # CLEAN DATA
 # -------------------------------
@@ -162,20 +161,20 @@ for i, (lang, val) in enumerate(top_lang.items()):
         col3.metric("🥉 Third", f"{lang} ({val:,})")
 
 color_map = {
-    "Nepali": "#636EFA",              # blue
-    "Punjabi": "#EF553B",             # red
-    "Hindi": "#00CC96",               # green
-    "Urdu": "#AB63FA",                # purple
-    "Sinhalese": "#FFA15A",           # orange
+    "Nepali": "#8C93F4",              # blue
+    "Punjabi": "#F67660",             # red
+    "Hindi": "#D27B18",               # green
+    "Urdu": "#370D63",                # purple
+    "Sinhalese": "#1E6E17",           # orange
     "Bengali": "#19D3F3",             # light blue
     "Gujarati": "#FF6692",            # pink
     "Marathi": "#B6E880",             # light green
     "Sindhi": "#FF97FF",              # light purple
-    "Dhivehi": "#FECB52",             # yellow
-    "Indo-Aryan, nec": "#A1A1FF",     # soft blue
-    "Fijian Hindustani": "#FF8C69",   # coral
-    "Konkani": "#00E396",             # teal-green
-    "Assamese": "#B39DDB"             # lavender
+    "Dhivehi": "#52FEDC",             # yellow
+    "Indo-Aryan, nec": "#15157F",     # soft blue
+    "Fijian Hindustani": "#382B27",   # coral
+    "Konkani": "#45DD63",             # teal-green
+    "Assamese": "#7F6CA3"             # lavender
 }
 # -------------------------------
 # CHART 1: LANGUAGE DISTRIBUTION
