@@ -448,19 +448,19 @@ with tab1:
 with tab2:
     st.dataframe(suburb_state, use_container_width=True)
 
-pivot = suburb_state.pivot_table(
-    index="Suburb",
-    columns="State",
-    values="Count",
-    fill_value=0
-)
+# pivot = suburb_state.pivot_table(
+#     index="Suburb",
+#     columns="State",
+#     values="Count",
+#     fill_value=0
+# )
 
-fig = px.imshow(
-    pivot,
-    title="Suburb vs State Heatmap"
-)
+# fig = px.imshow(
+#     pivot,
+#     title="Suburb vs State Heatmap"
+# )
 
-st.plotly_chart(fig, use_container_width=True)
+# st.plotly_chart(fig, use_container_width=True)
 # -------------------------------
 # 3️⃣ TOP LANGUAGE + STATES PER SUBURB
 # -------------------------------
