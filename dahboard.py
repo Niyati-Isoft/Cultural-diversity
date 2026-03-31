@@ -410,10 +410,54 @@ st.dataframe(mapping_df, use_container_width=True)
 # -------------------------------
 # Example: df_long should already exist in your app
 
-try:
-    filtered_by_state = df_long[
-        df_long["Language"].isin(selected_languages_from_states)
-    ]
+# try:
+#     filtered_by_state = df_long[
+#         df_long["Language"].isin(selected_languages_from_states)
+#     ]
 
-except:
-    st.warning("⚠️ df_long not found yet — integrate this section after your main data load.")
+# except:
+#     st.warning("⚠️ df_long not found yet — integrate this section after your main data load.")
+
+mapping_rows = []
+
+for lang, states in language_state_mapping.items():
+    for state in states:
+        mapping_rows.append({"Language": lang, "State": state})
+
+mapping_df = pd.DataFrame(mapping_rows)
+
+merged = df_long.merge(mapping_df, on="Language", how="left")
+
+suburb_state = (
+    merged.groupby(["Suburb", "State"])["Count"]
+    .sum()
+    .reset_index()
+)
+
+st.subheader("📍 Suburb → Indian State Mapping")
+
+tab1, tab2 = st.tabs(["📊 Graph", "📋 Data"])
+
+with tab1:
+    fig = px.bar(
+        suburb_state,
+        x="Suburb",
+        y="Count",
+        color="State",
+        title="Suburb-wise Indian State Distribution"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab2:
+    st.dataframe(suburb_state)
+    
+top_state_suburb = (
+    suburb_state.sort_values(["Suburb", "Count"], ascending=[True, False])
+    .groupby("Suburb")
+    .first()
+    .reset_index()
+)
+
+st.subheader("🏆 Top Indian State per Suburb")
+
+st.dataframe(top_state_suburb)
