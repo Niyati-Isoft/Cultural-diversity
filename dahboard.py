@@ -448,6 +448,16 @@ with tab1:
 with tab2:
     st.dataframe(suburb_state, use_container_width=True)
 
+fig = px.treemap(
+    suburb_state,
+    path=["Suburb", "State"],
+    values="Count",
+    color="State",
+    color_discrete_map=state_color_map,
+    title="Suburb → State Distribution (Treemap)"
+)
+
+st.plotly_chart(fig, use_container_width=True)
 # -------------------------------
 # 3️⃣ TOP LANGUAGE + STATES PER SUBURB
 # -------------------------------
