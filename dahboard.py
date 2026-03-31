@@ -397,14 +397,14 @@ st.dataframe(mapping_df, use_container_width=True)
 #     all_states
 # )
 
-# Convert selected states → languages
-if selected_states:
-    selected_languages_from_states = [
-        lang for lang, states in language_state_mapping.items()
-        if any(state in selected_states for state in states)
-    ]
-else:
-    selected_languages_from_states = languages
+# # Convert selected states → languages
+# if selected_states:
+#     selected_languages_from_states = [
+#         lang for lang, states in language_state_mapping.items()
+#         if any(state in selected_states for state in states)
+#     ]
+# else:
+#     selected_languages_from_states = languages
 
 # -------------------------------
 # 7. FINAL FILTERED DATA (USE THIS IN YOUR MAIN DASHBOARD)
