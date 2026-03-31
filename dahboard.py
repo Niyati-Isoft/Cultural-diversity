@@ -305,13 +305,10 @@ state_long["Language"] = state_long["Language"].str.replace(",", "").str.strip()
 # -------------------------------
 # LANGUAGE → STATE MAPPING SECTION
 # -------------------------------
-import streamlit as st
-import pandas as pd
-
 st.subheader("🧩 Language → State Mapping")
 
 # -------------------------------
-# 1. DEFINE LANGUAGES
+# LANGUAGES
 # -------------------------------
 languages = [
     "Bengali","Gujarati","Hindi","Konkani","Marathi","Nepali",
@@ -320,7 +317,7 @@ languages = [
 ]
 
 # -------------------------------
-# 2. DEFAULT MAPPING (YOUR LIST)
+# DEFAULT MAPPING
 # -------------------------------
 default_mapping = {
     "Bengali": ["West Bengal", "Tripura"],
@@ -336,16 +333,16 @@ default_mapping = {
     "Punjabi": ["Punjab"],
     "Sindhi": ["Pakistan"],
     "Urdu": ["Telangana", "Uttar Pradesh", "Bihar", "Pakistan"],
-    "Sinhalese": ["Sri Lanka"],  # optional
+    "Sinhalese": ["Sri Lanka"],
     "Assamese": ["Assam"],
-    "Dhivehi": ["Maldives"],  # optional
-    "Kashmiri": ["Kashmir"],  # optional
+    "Dhivehi": ["Maldives"],
+    "Kashmiri": ["Kashmir"],
     "Oriya": ["Odisha"],
     "Fijian Hindustani": ["Fiji"]
 }
 
 # -------------------------------
-# 3. ALL STATES OPTIONS
+# ALL STATES
 # -------------------------------
 all_states = [
     "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh",
@@ -353,15 +350,15 @@ all_states = [
     "Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur",
     "Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
     "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
-    "Uttar Pradesh","Uttarakhand","West Bengal","Kashmir","Fiji","Pakistan","Sri Lanka","Maldives"
+    "Uttar Pradesh","Uttarakhand","West Bengal",
+    "Kashmir","Fiji","Pakistan","Sri Lanka","Maldives"
 ]
 
 # -------------------------------
-# 4. BUILD UI (MULTI-SELECT PER LANGUAGE)
+# UI (MULTISELECT)
 # -------------------------------
 language_state_mapping = {}
-
-cols = st.columns(3)  # 3-column layout for clean UI
+cols = st.columns(3)
 
 for i, lang in enumerate(languages):
     with cols[i % 3]:
@@ -372,11 +369,9 @@ for i, lang in enumerate(languages):
         )
 
 # -------------------------------
-# 5. SHOW MAPPING TABLE
+# SHOW CURRENT MAPPING
 # -------------------------------
-st.markdown("### 📋 Current Mapping")
-
-mapping_df = pd.DataFrame([
+mapping_display = pd.DataFrame([
     {
         "Language": lang,
         "States": ", ".join(states) if states else "—"
@@ -384,57 +379,58 @@ mapping_df = pd.DataFrame([
     for lang, states in language_state_mapping.items()
 ])
 
-st.dataframe(mapping_df, use_container_width=True)
+st.markdown("### 📋 Current Mapping")
+st.dataframe(mapping_display, use_container_width=True)
 
 # -------------------------------
-# 6. OPTIONAL: FILTER BY STATES
+# CREATE EXPLODED MAPPING (FOR GRAPH)
 # -------------------------------
-# st.sidebar.subheader("🌏 Filter by Selected States")
-
-# selected_states = st.sidebar.multiselect(
-#     "Choose States",
-#     all_states
-# )
-
-# # Convert selected states → languages
-# if selected_states:
-#     selected_languages_from_states = [
-#         lang for lang, states in language_state_mapping.items()
-#         if any(state in selected_states for state in states)
-#     ]
-# else:
-#     selected_languages_from_states = languages
-
-# -------------------------------
-# 7. FINAL FILTERED DATA (USE THIS IN YOUR MAIN DASHBOARD)
-# -------------------------------
-# Example: df_long should already exist in your app
-
-# try:
-#     filtered_by_state = df_long[
-#         df_long["Language"].isin(selected_languages_from_states)
-#     ]
-
-# except:
-#     st.warning("⚠️ df_long not found yet — integrate this section after your main data load.")
-
 mapping_rows = []
-
 for lang, states in language_state_mapping.items():
     for state in states:
         mapping_rows.append({"Language": lang, "State": state})
 
 mapping_df = pd.DataFrame(mapping_rows)
 
+# -------------------------------
+# 🔥 IMPORTANT: USE FILTERED DATA
+# -------------------------------
 merged = filtered.merge(mapping_df, on="Language", how="left")
 
+# -------------------------------
+# 1️⃣ CLEAN TABLE (NO DUPLICATION)
+# -------------------------------
+suburb_lang = (
+    filtered.groupby(["Suburb", "Language"])["Count"]
+    .sum()
+    .reset_index()
+)
+
+suburb_lang["Indian State(s)"] = suburb_lang["Language"].apply(
+    lambda x: ", ".join(language_state_mapping.get(x, []))
+)
+
+final_df = suburb_lang.rename(columns={"Count": "Population"})
+
+st.subheader("📊 Suburb → Language → Indian State Mapping")
+st.dataframe(final_df.sort_values(["Suburb","Population"], ascending=[True, False]), use_container_width=True)
+
+# -------------------------------
+# 2️⃣ STATE-LEVEL GRAPH (EXPLODED VIEW)
+# -------------------------------
 suburb_state = (
     merged.groupby(["Suburb", "State"])["Count"]
     .sum()
     .reset_index()
 )
 
-st.subheader("📍 Suburb → Indian State Mapping")
+# 🎨 STATE COLORS SAME AS LANGUAGE
+state_color_map = {}
+for lang, states in language_state_mapping.items():
+    for state in states:
+        state_color_map[state] = color_map.get(lang, "#CCCCCC")
+
+st.subheader("📍 Suburb → Indian State Distribution")
 
 tab1, tab2 = st.tabs(["📊 Graph", "📋 Data"])
 
@@ -444,20 +440,30 @@ with tab1:
         x="Suburb",
         y="Count",
         color="State",
+        color_discrete_map=state_color_map,
         title="Suburb-wise Indian State Distribution"
     )
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
-    st.dataframe(suburb_state)
-    
-top_state_suburb = (
-    suburb_state.sort_values(["Suburb", "Count"], ascending=[True, False])
+    st.dataframe(suburb_state, use_container_width=True)
+
+# -------------------------------
+# 3️⃣ TOP LANGUAGE + STATES PER SUBURB
+# -------------------------------
+top_lang_suburb = (
+    filtered.groupby(["Suburb", "Language"])["Count"]
+    .sum()
+    .reset_index()
+    .sort_values(["Suburb", "Count"], ascending=[True, False])
     .groupby("Suburb")
     .first()
     .reset_index()
 )
 
-st.subheader("🏆 Top Indian State per Suburb")
+top_lang_suburb["Indian State(s)"] = top_lang_suburb["Language"].apply(
+    lambda x: ", ".join(language_state_mapping.get(x, []))
+)
 
-st.dataframe(top_state_suburb)
+st.subheader("🏆 Top Language → Indian States per Suburb")
+st.dataframe(top_lang_suburb, use_container_width=True)
