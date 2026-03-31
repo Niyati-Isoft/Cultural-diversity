@@ -426,7 +426,7 @@ for lang, states in language_state_mapping.items():
 
 mapping_df = pd.DataFrame(mapping_rows)
 
-merged = df_long.merge(mapping_df, on="Language", how="left")
+merged = filtered.merge(mapping_df, on="Language", how="left")
 
 suburb_state = (
     merged.groupby(["Suburb", "State"])["Count"]
