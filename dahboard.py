@@ -162,14 +162,14 @@ for i, (lang, val) in enumerate(top_lang.items()):
 
 color_map = {
     "Nepali": "#8C93F4",              # blue
-    "Punjabi": "#F67660",             # red
+    "Punjabi": "#F49EEB",             # red
     "Hindi": "#F4791A",               # green
     "Urdu": "#87DB8B",                # purple
     "Sinhalese": "#1E6E17",           # orange
     "Bengali": "#19D3F3",             # light blue
     "Gujarati": "#FF6692",            # pink
     "Marathi": "#97DAF5",             # light green
-    "Sindhi": "#FF97FF",              # light purple
+    "Sindhi": "#EBF561",              # light purple
     "Dhivehi": "#52FEDC",             # yellow
     "Indo-Aryan, nec": "#15157F",     # soft blue
     "Fijian Hindustani": "#382B27",   # coral
