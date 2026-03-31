@@ -54,7 +54,7 @@ st.markdown(
 # -------------------------------
 # LOAD DATA
 # -------------------------------
-file_path = r"C:\Users\NiyatiiSOFT\OneDrive - iSOFTGroup\Documents\Final data.xlsx"
+file_path = r"Final data.xlsx"
 df = pd.read_excel(file_path)
 
 # -------------------------------
@@ -285,7 +285,7 @@ with tab2:
 if st.checkbox("Show Data Table"):
     st.dataframe(filtered)
     
-state_df = pd.read_excel(r"C:\Users\NiyatiiSOFT\OneDrive - iSOFTGroup\Documents\lang_state.xlsx")
+state_df = pd.read_excel(r"lang_state.xlsx")
 st.write(state_df.columns.tolist())
 # Rename columns if needed
 state_df.columns = state_df.columns.str.strip()
