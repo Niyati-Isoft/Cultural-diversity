@@ -448,13 +448,16 @@ with tab1:
 with tab2:
     st.dataframe(suburb_state, use_container_width=True)
 
-fig = px.treemap(
-    suburb_state,
-    path=["Suburb", "State"],
+pivot = suburb_state.pivot_table(
+    index="Suburb",
+    columns="State",
     values="Count",
-    color="State",
-    color_discrete_map=state_color_map,
-    title="Suburb → State Distribution (Treemap)"
+    fill_value=0
+)
+
+fig = px.imshow(
+    pivot,
+    title="Suburb vs State Heatmap"
 )
 
 st.plotly_chart(fig, use_container_width=True)
