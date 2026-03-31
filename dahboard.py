@@ -6,7 +6,6 @@ import plotly.express as px
 # PAGE CONFIG
 # -------------------------------
 st.set_page_config(page_title="Language Dashboard", layout="wide")
-import streamlit as st
 from datetime import datetime
 import pytz
 
