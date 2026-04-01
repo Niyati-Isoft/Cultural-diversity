@@ -54,7 +54,7 @@ st.markdown(
 # -------------------------------
 # LOAD DATA
 # -------------------------------
-file_path = r"Final data.xlsx"
+file_path = "Final data.xlsx"
 df = pd.read_excel(file_path)
 # -------------------------------
 # CLEAN DATA
