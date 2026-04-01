@@ -9,10 +9,6 @@ st.set_page_config(page_title="Language Dashboard", layout="wide")
 from datetime import datetime
 import pytz
 
-# -------------------------------
-# PAGE CONFIG
-# -------------------------------
-st.set_page_config(layout="wide")
 
 # -------------------------------
 # GREETING
